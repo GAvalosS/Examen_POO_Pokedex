@@ -58,8 +58,7 @@ class Agua(Pokemon):
     
 
     def actualizar(self, boostAtaque, boostDefensa, boostVida):
-        super().actualizar(boostAtaque + 5, boostDefensa + 5, boostVida + 5)        #? De momento no tengo muy claro si a esto se refería con sobreescribir el método actualizar
-                                                                                    #? o si debía crear atributos boost específicos para cada subclase. Por ahora lo dejo así.
+        super().actualizar(boostAtaque + 5, boostDefensa + 5, boostVida + 5)
 
 class Fuego(Pokemon):
     ataque_especial = 'Lanzallamas'
@@ -92,7 +91,7 @@ class Hierba(Pokemon):
         super().actualizar(boostAtaque + 4, boostDefensa + 6, boostVida + 5)
 
 
-PEnemigos = []                                                                      #* Lista para almacenar los Pokémon enemigos
+PEnemigos = []
 
 PEnemigo = Agua('Squirtle', 'Es una tortuga :D', 240, 325, 220, 260)
 PEnemigos.append(PEnemigo)

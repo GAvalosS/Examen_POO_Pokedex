@@ -19,10 +19,18 @@ class Pokemon:
         self.evolucion = evolucion
     
     def detallesPokemon(self):
-        print(f'Nombre: {self.nombre}\nDescripción: {self.descripcion}\nAtaque: {self.ataque}\nDefensa: {self.defensa}\nVida: {self.vida}\nNivel: {self.nivel}\nEvolución: {self.evolucion}\nAtrapado: {self.atrapado}')
+        print(f'--------- {self.nombre} ---------\n'
+              f'Descripción: {self.descripcion}\n'
+              f'Atrapado: {'Sí' if self.atrapado else 'No'}\n'
+              f'Nivel: {self.nivel}\n'
+              f'Evolución: {self.evolucion}\n'
+              f'Vida: {self.vida}\n'
+              f'Ataque: {self.ataque}\n'
+              f'Defensa: {self.defensa}\n'
+              f'Daño Especial: {self.daño_especial}\n')
 
     def hablar(self):
-        print(f"Pokemon dice: '¡{self.nombre}!\n'.")
+        print(f"Pokemon dice: '¡{self.nombre}!.'\n")
 
     def entrenar(self):
         self.ataque += 10
@@ -102,3 +110,14 @@ PEnemigo = Fuego('Charmander', 'Es un lagarto :D', 260, 215, 195, 300)
 PEnemigos.append(PEnemigo)
 PEnemigo = Electrico('Pikachu', 'Es un ratón :D', 275, 200, 175, 250)
 PEnemigos.append(PEnemigo)
+
+
+'''  Pruebas de los métodos                                                        #! De momento no se actualiza ataque_especial
+for i in PEnemigos:
+    i.detallesPokemon()
+    i.hablar()
+    i.entrenar()
+    i.detallesPokemon()
+    i.actualizar(10, 10, 10)
+    i.detallesPokemon()
+'''

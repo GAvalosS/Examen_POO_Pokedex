@@ -32,3 +32,9 @@ en caso de algún error escribiendo código
 
 * De momento no está verificado que el código no tenga errores, sin embargo, como solo ha sido declarar variables y definir funciones no debería tener,
 de todas formas encontrar errores debería ser sencillo
+* Ya se verificaron los Métodos
+
+
+PENDIENTE:
+De momento no se actualiza ataque_especial
+Comentario de líneas 69 y 70
