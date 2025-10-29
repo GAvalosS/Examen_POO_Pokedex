@@ -2,10 +2,16 @@
 Comienzo del proyecto
 PTM qué bueno está este mate
 
-Punto 1 (clase base pokemon) empezado
-Punto 1 (clase base pokemon) finalizado
+* Se creó la carpeta con instrucciones, este README a manera de bitácora y el main de nombre pokedex.py
+* se creó el archivo pruebas.py para testear código nuevo sin hacerlo en el original, con motivo de salvaguardar el archivo principal
+en caso de algún error escribiendo código
 
-Punto 2 (Metodo de la clase pokemon) empezado
+1. CLASE BASE POKEMON
+    Empezado
+    Finalizado
+    - Agregué el atributo de daño_especial, para registrar también el valor del ataque especial de cada pokemon
+
+2. MÉTODOS DE LA CLASE POKEMON
     parte 1: Métodos básicos. Empezado
     parte 1: Métodos básicos. finalizado
 
@@ -14,3 +20,15 @@ Punto 2 (Metodo de la clase pokemon) empezado
 
     parte 3: Método de actualización completa. Empezado
     parte 3: Método de actualización completa. Finalizado
+
+3. CREAR SUBCLASES DE POKEMON
+    Empezado
+    Finalizado
+
+4. COMBATE Y ATRAPADO
+    4.1 Empezado
+        Línea 95
+        Finalizado. Considerar que la opción de crear nuevo enemigo por el usuario se agregará cuando se desarrollen las funciones dentro del menú
+
+* De momento no está verificado que el código no tenga errores, sin embargo, como solo ha sido declarar variables y definir funciones no debería tener,
+de todas formas encontrar errores debería ser sencillo
