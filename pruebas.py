@@ -34,6 +34,7 @@ class Pokemon:
 
     def entrenar(self):
         self.ataque += 10
+        self.daño_especial += 11
         self.defensa += 10
         self.vida += 10
         self.nivel += 20
@@ -45,6 +46,7 @@ class Pokemon:
     
     def subirAtaque(self, boostAtaque):
         self.ataque += boostAtaque
+        self.daño_especial += boostAtaque + 1
 
     def subirDefensa(self, boostDefensa):
         self.defensa += boostDefensa
@@ -112,7 +114,7 @@ PEnemigo = Electrico('Pikachu', 'Es un ratón :D', 275, 200, 175, 250)
 PEnemigos.append(PEnemigo)
 
 
-'''  Pruebas de los métodos                                                        #! De momento no se actualiza ataque_especial
+'''  Pruebas de los métodos
 for i in PEnemigos:
     i.detallesPokemon()
     i.hablar()
@@ -121,3 +123,11 @@ for i in PEnemigos:
     i.actualizar(10, 10, 10)
     i.detallesPokemon()
 '''
+
+#! Me brinqué el punto 4.2
+
+misPokemones = []
+
+def verPokemones():
+    for i in misPokemones:
+        i.detallesPokemon()

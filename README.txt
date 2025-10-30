@@ -35,6 +35,18 @@ de todas formas encontrar errores debería ser sencillo
 * Ya se verificaron los Métodos
 
 
+30/10/25
+ya se actualiza ataque_especial dentro de las funciones de subirAtaque y entrenar
+
+    4.2
+        * de momento creo que es mejor dejar 4.2 pendiente para antender bien la dinámmica
+
+    4.3 Empezado
+        Finalizado
+
+5. INTERACCIONES CON EL USUARIO
+
+
 PENDIENTE:
-De momento no se actualiza ataque_especial
+Punto 4.2
 Comentario de líneas 69 y 70
