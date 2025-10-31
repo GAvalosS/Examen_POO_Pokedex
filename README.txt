@@ -50,13 +50,23 @@ ya se actualiza ataque_especial dentro de las funciones de subirAtaque y entrena
     Empezado los requerimientos de la Interaz del usuario.
     Funcion menú implementada
         Opcion 1: completa
-        Opcion 2: En proceso
-        Opción 3: completa
-        Opcion 4: En proceso
-        Opcion 5:
+        Opcion 2: completa
+        Opción 3: 
+        Opcion 4: 
+        Opcion 5: completa
+        Opcion 6: semicompleto
+            el código de aquí está bien puercote
+        Opcion 0: completa
+        Opcion incorrecta: completa
     
 * EL CÓDIGO PRINCIPAL ESTÁ DENTRO DE LA FUNCIÓN main()
+* La estructura hasta ahora es
+    CLASE
+    Variables y listas
+    Funciones para el código
+    Funcion main()
 
 PENDIENTE:
 Punto 4.2
 Comentario de líneas 69 y 70
+Opciones 2 y 3 del menú

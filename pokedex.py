@@ -2,6 +2,7 @@
 class Pokemon:
     nombre = 'Sin Pokémon'
     descripcion = 'No descripción'
+    ataque_especial = 'No hay ataque especial'
     ataque = 0
     daño_especial = 0
     defensa = 0
@@ -27,10 +28,11 @@ class Pokemon:
               f'Vida: {self.vida}\n'
               f'Ataque: {self.ataque}\n'
               f'Defensa: {self.defensa}\n'
+              f'Ataque Especial: {self.ataque_especial}\n'
               f'Daño Especial: {self.daño_especial}\n')
 
     def hablar(self):
-        print(f"Pokemon dice: '¡{self.nombre}!.'\n")
+        print(f"Pokemon dice: '¡{self.nombre}!'.\n")
 
     def entrenar(self):
         self.ataque += 10
@@ -133,7 +135,7 @@ def mostrarMenu():
 
 def buscarPokemon():
     i = 1
-    PBuscado = input('\nIngresa el nombre del Pokémon que deseas buscar: ')
+    PBuscado = input()
     for p in misPokemones:
         if p.nombre.lower() == PBuscado.lower():
             indice = i - 1
@@ -141,11 +143,14 @@ def buscarPokemon():
         else:
             i += 1
     if i > len(misPokemones):
+        print(f'\n¡Oh no, {nombre_usuario}! Parece que aún no tienes ese Pokémon atrapado. UnU\n'
+                      'Vamos por él. :D\n')  
         return None
 
 
 def main():
     print('\n¡Bienvenido al Pokédex!\n')
+    global nombre_usuario
     nombre_usuario = input('Por favor, ingresa tu nombre: ')
     print(f'¡Hola, {nombre_usuario}! :)\n\n'
           'De momento, no tienes ningún Pokémon atrapado. :(\n'
@@ -155,7 +160,7 @@ def main():
           '2.     Fuego (Charmander)\n'
           '3.     Eléctrico (Pikachu)\n'
           '4.     Hierba (Bulbasaur)\n')
-    
+
     while True:
         eleccion = input('¿Cuál te gustaría atrapar? (Ingresa el número correspondiente): ')
         try:
@@ -184,27 +189,101 @@ def main():
     while True:
         mostrarMenu()
         opcion = input(f'¡{nombre_usuario}! Selecciona una opción del menú: ')
+
         if opcion == '1':
+            print('\nIngresa el nombre de tu Pokémon para ver sus detalles: ')
             indice = buscarPokemon()
             if indice is not None:
                 print('\n--- Detalles de tu Pokémon ---\n')
-                misPokemones[indice].detallesPokemon()
-            else:
-                print(f'\n¡Oh no, {nombre_usuario}! Parece que aún no tienes ese Pokémon atrapado. UnU\n'
-                      'Vamos por él. :D\n')            
+                misPokemones[indice].detallesPokemon()        
+
         elif opcion == '2':
-            pass
+            print('\nIngresa el nombre de tu Pokémon para que hable: ')
+            indice = buscarPokemon()
+            if indice is not None:
+                misPokemones[indice].hablar()
+
         elif opcion == '3':
             pass
+
         elif opcion == '4':
             pass
+
         elif opcion == '5':
             verPokemones()
+
         elif opcion == '6':
-            pass
+            print('Excelente, vamos a crear un nuevo Pokémon enemigo para que puedas combatir.\n')
+
+            while True:
+                tipo = input('Ingresa el tipo de Pokémon (Agua, Fuego, Eléctrico, Hierba): ').strip().lower()
+                if tipo in ['agua', 'fuego', 'eléctrico', 'hierba']:
+                    break
+                else:
+                    print('Ups. Ese tipo de Pokémon no existe. U.U\n')
+
+            nombre = input('Ingresa el nombre del Pokémon: ')
+            descripcion = input('Ingresa una breve descripción del Pokémon: ')
+            
+            while True:
+                try:
+                    ataque = int(input('Ingresa el valor de ataque del Pokémon (1 - 1000): '))
+                    if ataque < 1 or ataque > 1000:
+                        raise ValueError
+                except ValueError:
+                    print('Ups. Ese valor no está dentro del rango. :p\n')
+                else:
+                    break
+
+            while True:
+                try:
+                    defensa = int(input('Ingresa el valor de defensa del Pokémon (1 - 1000): '))
+                    if defensa < 1 or defensa > 1000:
+                        raise ValueError
+                except ValueError:
+                    print('Ups. Ese valor no está dentro del rango. :p\n')
+                else:
+                    break
+
+            while True:
+                try:
+                    vida = int(input('Ingresa el valor de vida del Pokémon (1 - 1000): '))
+                    if vida < 1 or vida > 1000:
+                        raise ValueError
+                except ValueError:
+                    print('Ups. Ese valor no está dentro del rango. :p\n')
+                else:
+                    break
+
+            while True:
+                try:
+                    daño_especial = int(input('Ingresa el valor de defensa del Pokémon (1 - 1000): '))
+                    if daño_especial < 1 or daño_especial > 1000:
+                        raise ValueError
+                except ValueError:
+                    print('Ups. Ese valor no está dentro del rango. :p\n')
+                else:
+                    break
+
+            if tipo == 'agua':
+                nuevo_pokemon = Agua(nombre, descripcion, ataque, defensa, vida, daño_especial)
+            elif tipo == 'fuego':
+                nuevo_pokemon = Fuego(nombre, descripcion, ataque, defensa, vida, daño_especial)
+            elif tipo == 'eléctrico':
+                nuevo_pokemon = Electrico(nombre, descripcion, ataque, defensa, vida, daño_especial)
+            elif tipo == 'hierba':
+                nuevo_pokemon = Hierba(nombre, descripcion, ataque, defensa, vida, daño_especial)
+
+            PEnemigos.append(nuevo_pokemon)
+            print(f'\n¡Nuevo Pokémon enemigo {nombre} creado exitosamente! :O\n')
+            print('Aquí están los detalles de tu nuevo Pokémon enemigo:\n')
+            nuevo_pokemon.detallesPokemon()
+            print('¡Ahora puedes desafiarlo en combate desde el menú principal! >:)\n')
+
         elif opcion == '0':
-            print(f'¡Gracias por usar el Pokédex, {nombre_usuario}! ¡Vuelve pronto! :D\n')
+            print(f'\n¡Gracias por usar el Pokédex, {nombre_usuario}! ¡Vuelve pronto! :D\n')
             break
+
         else:
             print('Ups. Parece que aún no existe esa opción. T-T\n'
                   '¿Qué te parece si lo intentas una de nuestro menú? :D\n')
