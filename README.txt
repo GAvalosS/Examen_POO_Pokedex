@@ -44,8 +44,18 @@ ya se actualiza ataque_especial dentro de las funciones de subirAtaque y entrena
     4.3 Empezado
         Finalizado
 
-5. INTERACCIONES CON EL USUARIO
 
+31/10/25
+5. INTERACCIONES CON EL USUARIO
+    Empezado los requerimientos de la Interaz del usuario.
+    Funcion menú implementada
+        Opcion 1: completa
+        Opcion 2: En proceso
+        Opción 3: completa
+        Opcion 4: En proceso
+        Opcion 5:
+    
+* EL CÓDIGO PRINCIPAL ESTÁ DENTRO DE LA FUNCIÓN main()
 
 PENDIENTE:
 Punto 4.2
