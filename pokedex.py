@@ -1,4 +1,3 @@
-
 class Pokemon:
     nombre = 'Sin Pokémon'
     descripcion = 'No descripción'
@@ -18,7 +17,7 @@ class Pokemon:
         self.defensa = defensa
         self.vida = vida
         self.evolucion = evolucion
-    
+
     def detallesPokemon(self):
         print(f'--------- {self.nombre} ---------\n'
               f'Descripción: {self.descripcion}\n'
@@ -41,18 +40,22 @@ class Pokemon:
         self.vida += 10
         self.nivel += 20
 
+
         if self.nivel >= 100:
             self.evolucion += 1
-            print(f'¡{self.nombre} ha evolucionado a nivel {self.evolucion}!\n')
+            print(f'¡{self.nombre} ha evolucionado a su fase {self.evolucion}!\n')
             self.nivel = 0
-    
+
+
+        
+
     def subirAtaque(self, boostAtaque):
         self.ataque += boostAtaque
         self.daño_especial += boostAtaque + 1
 
     def subirDefensa(self, boostDefensa):
         self.defensa += boostDefensa
-    
+
     def subirVida(self, boostVida):
         self.vida += boostVida
 
@@ -61,16 +64,17 @@ class Pokemon:
         self.subirDefensa(boostDefensa)
         self.subirVida(boostVida)
 
+
 class Agua(Pokemon):
     ataque_especial = 'Hidrobomba'
 
     def __init__(self, nombre, descripcion, ataque, defensa, vida, daño_especial, evolucion=1):
         super().__init__(nombre, descripcion, ataque, defensa, vida, evolucion)
         self.daño_especial = daño_especial
-    
 
     def actualizar(self, boostAtaque, boostDefensa, boostVida):
         super().actualizar(boostAtaque + 5, boostDefensa + 5, boostVida + 5)
+
 
 class Fuego(Pokemon):
     ataque_especial = 'Lanzallamas'
@@ -82,6 +86,7 @@ class Fuego(Pokemon):
     def actualizar(self, boostAtaque, boostDefensa, boostVida):
         super().actualizar(boostAtaque + 7, boostDefensa + 3, boostVida + 4)
 
+
 class Electrico(Pokemon):
     ataque_especial = 'Rayo'
 
@@ -92,9 +97,10 @@ class Electrico(Pokemon):
     def actualizar(self, boostAtaque, boostDefensa, boostVida):
         super().actualizar(boostAtaque + 6, boostDefensa + 4, boostVida + 3)
 
+
 class Hierba(Pokemon):
     ataque_especial = 'Rayo Solar'
-    
+
     def __init__(self, nombre, descripcion, ataque, defensa, vida, daño_especial, evolucion=1):
         super().__init__(nombre, descripcion, ataque, defensa, vida, evolucion)
         self.daño_especial = daño_especial
@@ -116,12 +122,13 @@ PEnemigos.append(PEnemigo)
 
 misPokemones = []
 
+
 def verPokemones():
     print('\n--- Tus Pokémons Atrapados ---\n')
     for i in misPokemones:
         i.detallesPokemon()
-    print('Vas por buen camino, ¡sigue así! :3\n')
-    print('------------------------------\n')
+
+
 
 def mostrarMenu():
     print('\n------ Menú Principal ------\n'
@@ -132,6 +139,7 @@ def mostrarMenu():
           '5.   Ver Pokémon atrapados.\n'
           '6.   Crear Pokémon enemigo.\n'
           '0.   Salir')
+
 
 def buscarPokemon():
     i = 1
@@ -144,7 +152,7 @@ def buscarPokemon():
             i += 1
     if i > len(misPokemones):
         print(f'\n¡Oh no, {nombre_usuario}! Parece que aún no tienes ese Pokémon atrapado. UnU\n'
-                      'Vamos por él. :D\n')  
+              'Vamos por él. :D\n')
         return None
 
 
@@ -195,7 +203,7 @@ def main():
             indice = buscarPokemon()
             if indice is not None:
                 print('\n--- Detalles de tu Pokémon ---\n')
-                misPokemones[indice].detallesPokemon()        
+                misPokemones[indice].detallesPokemon()
 
         elif opcion == '2':
             print('\nIngresa el nombre de tu Pokémon para que hable: ')
@@ -204,13 +212,98 @@ def main():
                 misPokemones[indice].hablar()
 
         elif opcion == '3':
-            pass
+            print('\n--- Entrenamiento de Pokémon ---')
+            print("\nSeleccione al Pokémon que desea entrenar")
+            verPokemones()
+            indice = buscarPokemon()
+
+            while True:    
+                op = input('\n-----Opciones de entrenamiento:-----\n'
+                           '    1-      Entrenamiento normal\n'
+                           '    2-      Entrenamiento individual\n'
+                           '    3-      Entrenamiento intensivo\n'
+                           '    4-      Entrenamiento personalizado\n'
+                           '    0-      Salir\n'
+                           '-------------------------------------\n'
+                           'Seleccione una opción: ')
+                
+                if op == '1':
+                    misPokemones[indice].entrenar()
+
+                elif op == '2':
+                    estadistica = input('Seleccione la estadística que desea mejorar:\n'
+                                        '   -Ataque\n'
+                                        '   -Defensa\n'
+                                        '   -Vida\n')
+                    estadistica.lower()
+                    while True:
+                        if estadistica == 'ataque':
+                            misPokemones[indice].subirAtaque(10)
+                            break
+                        elif estadistica == 'defensa':
+                            misPokemones[indice].subirDefensa(10)
+                            break
+                        elif estadistica == 'vida':
+                            misPokemones[indice].subirVida(10)
+                            break
+                        else:
+                            print('Parece que esa estadística aún no la manejo. :(\n'
+                                  '¿Qué te parece si eliges otra? :D\n')
+
+                elif op == '3':
+                    boost = int(input('\n¿En cuánto quiere mejorar las estadísticas de su Pokémon?'))
+                    misPokemones[indice].subirAtaque(boost)
+                    misPokemones[indice].subirDefensa(boost)
+                    misPokemones[indice].subirVida(boost)
+
+                elif op == '4':
+                    estadistica = input('\nSeleccione la estadística que desea mejorar:\n'
+                                        '   -Ataque\n'
+                                        '   -Defensa\n'
+                                        '   -Vida\n')
+                    while True:
+                        if estadistica == 'ataque':
+                            boost = int(input('¿En cuánto quiere mejorar la estadística de su Pokémon?'))
+                            misPokemones[indice].subirAtaque(boost)
+                            break
+                        elif estadistica == 'defensa':
+                            boost = int(input('¿En cuánto quiere mejorar la estadística de su Pokémon?'))
+                            misPokemones[indice].subirDefensa(boost)
+                            break
+                        elif estadistica == 'vida':
+                            boost = int(input('¿En cuánto quiere mejorar la estadística de su Pokémon?'))
+                            misPokemones[indice].subirVida(boost)
+                            break
+                        else:
+                            print('Elija una estadística válida')
+
+                elif op == '0':
+                    print('\nSaliendo del entrenamiento de Pokémon.\n')
+                    break
+
+                else:
+                    print('\nUps. Parece que aún no existe esa opción. T-T')
+
+                print('\n¡Muy bien!, las nuevas estadísticas de tu Pokémon son:\n'
+                     f'Ataque: {misPokemones[indice].ataque}\n'
+                     f'Daño Especial: {misPokemones[indice].daño_especial}\n'
+                     f'Defensa: {misPokemones[indice].defensa}\n'
+                     f'Vida: {misPokemones[indice].vida}\n'
+                     f'Nivel: {misPokemones[indice].nivel}\n')
 
         elif opcion == '4':
-            pass
+            import random
+            PSalvaje = random.choice(PEnemigos)
+            print(f'¡Un {PSalvaje} ha aparecido!\n'
+                  f'{PSalvaje.detallesPokemon()}'
+                  '¿Qué vas a hacer ahora?\n'
+                  '1-Pasar Turno      2-Ataque normal\n'
+                  '3-Ataque especial  3-Huir')
 
         elif opcion == '5':
             verPokemones()
+            print('Vas por buen camino, ¡sigue así! :3\n')
+            print('------------------------------\n')
 
         elif opcion == '6':
             print('Excelente, vamos a crear un nuevo Pokémon enemigo para que puedas combatir.\n')
@@ -224,7 +317,7 @@ def main():
 
             nombre = input('Ingresa el nombre del Pokémon: ')
             descripcion = input('Ingresa una breve descripción del Pokémon: ')
-            
+
             while True:
                 try:
                     ataque = int(input('Ingresa el valor de ataque del Pokémon (1 - 1000): '))
@@ -232,6 +325,8 @@ def main():
                         raise ValueError
                 except ValueError:
                     print('Ups. Ese valor no está dentro del rango. :p\n')
+                except TypeError:
+                    print('Ups. Ese valor no lo conozco, mosco. XD \n')
                 else:
                     break
 
@@ -242,6 +337,8 @@ def main():
                         raise ValueError
                 except ValueError:
                     print('Ups. Ese valor no está dentro del rango. :p\n')
+                except TypeError:
+                    print('Ups. Ese valor no lo conozco, mosco. XD \n')
                 else:
                     break
 
@@ -252,16 +349,20 @@ def main():
                         raise ValueError
                 except ValueError:
                     print('Ups. Ese valor no está dentro del rango. :p\n')
+                except TypeError:
+                    print('Ups. Ese valor no lo conozco, mosco. XD \n')
                 else:
                     break
 
             while True:
                 try:
-                    daño_especial = int(input('Ingresa el valor de defensa del Pokémon (1 - 1000): '))
+                    daño_especial = int(input('Ingresa el valor del daño especial del Pokémon (1 - 1000): '))
                     if daño_especial < 1 or daño_especial > 1000:
                         raise ValueError
                 except ValueError:
                     print('Ups. Ese valor no está dentro del rango. :p\n')
+                except TypeError:
+                    print('Ups. Ese valor no lo conozco, mosco. XD \n')
                 else:
                     break
 
