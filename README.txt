@@ -51,7 +51,7 @@ ya se actualiza ataque_especial dentro de las funciones de subirAtaque y entrena
     Funcion menú implementada
         Opcion 1: completa
         Opcion 2: completa
-        Opción 3: 
+        Opción 3: completado
         Opcion 4: 
         Opcion 5: completa
         Opcion 6: semicompleto
@@ -66,7 +66,12 @@ ya se actualiza ataque_especial dentro de las funciones de subirAtaque y entrena
     Funciones para el código
     Funcion main()
 
+1/11/2025
+Evoluciones añadidas
+Solucionados todos los errores que pude encontrar sobre el entrenamiento y las evoluciones
+
 PENDIENTE:
 Punto 4.2
 Comentario de líneas 69 y 70
-Opciones 2 y 3 del menú
+Opciones 4 del menú
+optimizar el código de la opción 6

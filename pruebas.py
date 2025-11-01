@@ -1,5 +1,6 @@
 class Pokemon:
     nombre = 'Sin Pokémon'
+    evos = []
     descripcion = 'No descripción'
     ataque_especial = 'No hay ataque especial'
     ataque = 0
@@ -10,8 +11,9 @@ class Pokemon:
     evolucion = 1
     atrapado = False
 
-    def __init__(self, nombre, descripcion, ataque, defensa, vida, evolucion=1):
-        self.nombre = nombre
+    def __init__(self, evos, descripcion, ataque, defensa, vida, evolucion=1):
+        self.nombre = evos[0]
+        self.evos = evos
         self.descripcion = descripcion
         self.ataque = ataque
         self.defensa = defensa
@@ -21,7 +23,7 @@ class Pokemon:
     def detallesPokemon(self):
         print(f'--------- {self.nombre} ---------\n'
               f'Descripción: {self.descripcion}\n'
-              f'Atrapado: {'Sí' if self.atrapado else 'No'}\n'
+              f"Atrapado: {'Sí' if self.atrapado else 'No'}\n"
               f'Nivel: {self.nivel}\n'
               f'Evolución: {self.evolucion}\n'
               f'Vida: {self.vida}\n'
@@ -40,24 +42,56 @@ class Pokemon:
         self.vida += 10
         self.nivel += 20
 
-
         if self.nivel >= 100:
-            self.evolucion += 1
-            print(f'¡{self.nombre} ha evolucionado a su fase {self.evolucion}!\n')
-            self.nivel = 0
+            if self.evolucion < len(self.evos):
+                self.evolucion += 1
+                print(f'\n¡{self.nombre} ha evolucionado a su fase {self.evolucion}!\n'
+                      f'¡Ahora es {self.evos[self.evolucion - 1]}!    :O\n')
+                self.nombre = self.evos[self.evolucion - 1]
+                self.nivel = 0
+            else:
+                self.nivel = 100
+                print(f'\n¡{self.nombre} ha alcanzado el nivel máximo de evolución!\n')
 
-
+        if self.ataque > 1000:
+            print(f'\n¡{self.nombre} ha alcanzado el ataque máximo de 1000!\n')
+            self.ataque = 1000
         
+        if self.defensa > 1000:
+            print(f'\n¡{self.nombre} ha alcanzado la defensa máxima de 1000!\n')
+            self.defensa = 1000
+        
+        if self.vida > 1000:
+            print(f'\n¡{self.nombre} ha alcanzado la vida máxima de 1000!\n')
+            self.vida = 1000
+        
+        if self.daño_especial > 1200:
+            print(f'\n¡{self.nombre} ha alcanzado el daño especial máximo de 1200!\n')
+            self.daño_especial = 1200
 
     def subirAtaque(self, boostAtaque):
         self.ataque += boostAtaque
         self.daño_especial += boostAtaque + 1
+        
+        if self.ataque > 1000:
+            print(f'\n¡{self.nombre} ha alcanzado el ataque máximo de 1000!\n')
+            self.ataque = 1000
+
+        if self.daño_especial > 1200:
+            print(f'\n¡{self.nombre} ha alcanzado el daño especial máximo de 1200!\n')
+            self.daño_especial = 1200
 
     def subirDefensa(self, boostDefensa):
         self.defensa += boostDefensa
+        if self.defensa > 1000:
+            print(f'\n¡{self.nombre} ha alcanzado la defensa máxima de 1000!\n')
+            self.defensa = 1000
 
     def subirVida(self, boostVida):
         self.vida += boostVida
+        if self.vida > 1000:
+            print(f'\n¡{self.nombre} ha alcanzado la vida máxima de 1000!\n')
+            self.vida = 1000
 
     def actualizar(self, boostAtaque, boostDefensa, boostVida):
         self.subirAtaque(boostAtaque)
@@ -69,7 +103,7 @@ class Agua(Pokemon):
     ataque_especial = 'Hidrobomba'
 
     def __init__(self, nombre, descripcion, ataque, defensa, vida, daño_especial, evolucion=1):
-        super().__init__(nombre, descripcion, ataque, defensa, vida, evolucion)
+        super().__init__([nombre], descripcion, ataque, defensa, vida, evolucion)
         self.daño_especial = daño_especial
 
     def actualizar(self, boostAtaque, boostDefensa, boostVida):
@@ -80,7 +114,7 @@ class Fuego(Pokemon):
     ataque_especial = 'Lanzallamas'
 
     def __init__(self, nombre, descripcion, ataque, defensa, vida, daño_especial, evolucion=1):
-        super().__init__(nombre, descripcion, ataque, defensa, vida, evolucion)
+        super().__init__([nombre], descripcion, ataque, defensa, vida, evolucion)
         self.daño_especial = daño_especial
 
     def actualizar(self, boostAtaque, boostDefensa, boostVida):
@@ -91,7 +125,7 @@ class Electrico(Pokemon):
     ataque_especial = 'Rayo'
 
     def __init__(self, nombre, descripcion, ataque, defensa, vida, daño_especial, evolucion=1):
-        super().__init__(nombre, descripcion, ataque, defensa, vida, evolucion)
+        super().__init__([nombre], descripcion, ataque, defensa, vida, evolucion)
         self.daño_especial = daño_especial
 
     def actualizar(self, boostAtaque, boostDefensa, boostVida):
@@ -102,7 +136,7 @@ class Hierba(Pokemon):
     ataque_especial = 'Rayo Solar'
 
     def __init__(self, nombre, descripcion, ataque, defensa, vida, daño_especial, evolucion=1):
-        super().__init__(nombre, descripcion, ataque, defensa, vida, evolucion)
+        super().__init__([nombre], descripcion, ataque, defensa, vida, evolucion)
         self.daño_especial = daño_especial
 
     def actualizar(self, boostAtaque, boostDefensa, boostVida):
@@ -112,12 +146,23 @@ class Hierba(Pokemon):
 PEnemigos = []
 
 PEnemigo = Agua('Squirtle', 'Es una tortuga :D', 240, 325, 220, 260)
+evos = ['Squirtle', 'Wartortle', 'Blastoise']
+PEnemigo.evos = evos
 PEnemigos.append(PEnemigo)
+
 PEnemigo = Fuego('Charmander', 'Es un lagarto :D', 260, 215, 195, 300)
+evos = ['Charmander', 'Charmeleon', 'Charizard']
+PEnemigo.evos = evos
 PEnemigos.append(PEnemigo)
-PEnemigo = Electrico('Pikachu', 'Es un ratón :D', 275, 200, 175, 250)
+
+PEnemigo = Electrico('Pikachu', 'Es un ratón :D', 275, 200, 175, 250, evolucion=2)
+evos = ['Pichu', 'Pikachu', 'Raichu']
+PEnemigo.evos = evos
 PEnemigos.append(PEnemigo)
+
 PEnemigo = Hierba('Bulbasaur', 'Es una planta :D', 245, 245, 225, 325)
+evos = ['Bulbasaur', 'Ivysaur', 'Venusaur']
+PEnemigo.evos = evos
 PEnemigos.append(PEnemigo)
 
 misPokemones = []
@@ -213,92 +258,101 @@ def main():
 
         elif opcion == '3':
             print('\n--- Entrenamiento de Pokémon ---')
-            print("\nSeleccione al Pokémon que desea entrenar")
             verPokemones()
+            print("Seleccione al Pokémon que desea entrenar: ")
             indice = buscarPokemon()
 
-            while True:    
-                op = input('\n-----Opciones de entrenamiento:-----\n'
-                           '    1-      Entrenamiento normal\n'
-                           '    2-      Entrenamiento individual\n'
-                           '    3-      Entrenamiento intensivo\n'
-                           '    4-      Entrenamiento personalizado\n'
-                           '    0-      Salir\n'
-                           '-------------------------------------\n'
-                           'Seleccione una opción: ')
+            if indice is not None:
+                while True:    
+                    op = input('\n-----Opciones de entrenamiento:-----\n'
+                               '    1-      Entrenamiento normal\n'
+                               '    2-      Entrenamiento individual\n'
+                               '    3-      Entrenamiento intensivo\n'
+                               '    4-      Entrenamiento personalizado\n'
+                               '    0-      Salir\n'
+                               '-------------------------------------\n'
+                               'Seleccione una opción: ')
                 
-                if op == '1':
-                    misPokemones[indice].entrenar()
+                    if op == '1':
+                        misPokemones[indice].entrenar()
 
-                elif op == '2':
-                    estadistica = input('Seleccione la estadística que desea mejorar:\n'
-                                        '   -Ataque\n'
-                                        '   -Defensa\n'
-                                        '   -Vida\n')
-                    estadistica.lower()
-                    while True:
-                        if estadistica == 'ataque':
-                            misPokemones[indice].subirAtaque(10)
-                            break
-                        elif estadistica == 'defensa':
-                            misPokemones[indice].subirDefensa(10)
-                            break
-                        elif estadistica == 'vida':
-                            misPokemones[indice].subirVida(10)
-                            break
-                        else:
-                            print('Parece que esa estadística aún no la manejo. :(\n'
-                                  '¿Qué te parece si eliges otra? :D\n')
+                    elif op == '2':
+                        estadistica = input('Seleccione la estadística que desea mejorar:\n'
+                                            '   -Ataque\n'
+                                            '   -Defensa\n'
+                                            '   -Vida\n')
+                        estadistica.lower()
+                        while True:
+                            if estadistica == 'ataque':
+                                misPokemones[indice].subirAtaque(10)
+                                break
+                            elif estadistica == 'defensa':
+                                misPokemones[indice].subirDefensa(10)
+                                break
+                            elif estadistica == 'vida':
+                                misPokemones[indice].subirVida(10)
+                                break
+                            else:
+                                print('Parece que esa estadística aún no la manejo. :(\n'
+                                      '¿Qué te parece si eliges otra? :D\n')
+                                estadistica = input('Seleccione la estadística que desea mejorar:\n')
 
-                elif op == '3':
-                    boost = int(input('\n¿En cuánto quiere mejorar las estadísticas de su Pokémon?'))
-                    misPokemones[indice].subirAtaque(boost)
-                    misPokemones[indice].subirDefensa(boost)
-                    misPokemones[indice].subirVida(boost)
+                    elif op == '3':
+                        while True:
+                            try:
+                                boost = int(input('\n¿En cuánto quiere mejorar las estadísticas de su Pokémon?'))
+                                break
+                            except ValueError:
+                                print('Ups. Ese valor no es válido. :p\n')           
+                        misPokemones[indice].subirAtaque(boost)
+                        misPokemones[indice].subirDefensa(boost)
+                        misPokemones[indice].subirVida(boost)
 
-                elif op == '4':
-                    estadistica = input('\nSeleccione la estadística que desea mejorar:\n'
-                                        '   -Ataque\n'
-                                        '   -Defensa\n'
-                                        '   -Vida\n')
-                    while True:
-                        if estadistica == 'ataque':
-                            boost = int(input('¿En cuánto quiere mejorar la estadística de su Pokémon?'))
-                            misPokemones[indice].subirAtaque(boost)
-                            break
-                        elif estadistica == 'defensa':
-                            boost = int(input('¿En cuánto quiere mejorar la estadística de su Pokémon?'))
-                            misPokemones[indice].subirDefensa(boost)
-                            break
-                        elif estadistica == 'vida':
-                            boost = int(input('¿En cuánto quiere mejorar la estadística de su Pokémon?'))
-                            misPokemones[indice].subirVida(boost)
-                            break
-                        else:
-                            print('Elija una estadística válida')
+                    elif op == '4':
+                        estadistica = input('\nSeleccione la estadística que desea mejorar:\n'
+                                            '   -Ataque\n'
+                                            '   -Defensa\n'
+                                            '   -Vida\n')
+                        while True:
+                            if estadistica == 'ataque':
+                                boost = int(input('¿En cuánto quiere mejorar la estadística de su Pokémon?\n'))
+                                misPokemones[indice].subirAtaque(boost)
+                                break
+                            elif estadistica == 'defensa':
+                                boost = int(input('¿En cuánto quiere mejorar la estadística de su Pokémon?\n'))
+                                misPokemones[indice].subirDefensa(boost)
+                                break
+                            elif estadistica == 'vida':
+                                boost = int(input('¿En cuánto quiere mejorar la estadística de su Pokémon?\n'))
+                                misPokemones[indice].subirVida(boost)
+                                break
+                            else:
+                                print('Estadística inválida')
+                                estadistica = input('\nSeleccione la estadística que desea mejorar:\n')
+                                break
 
-                elif op == '0':
-                    print('\nSaliendo del entrenamiento de Pokémon.\n')
-                    break
+                    elif op == '0':
+                        print('\nSaliendo del entrenamiento de Pokémon.\n')
+                        break
 
-                else:
-                    print('\nUps. Parece que aún no existe esa opción. T-T')
+                    else:
+                        print('\nUps. Parece que aún no existe esa opción. T-T')
 
-                print('\n¡Muy bien!, las nuevas estadísticas de tu Pokémon son:\n'
-                     f'Ataque: {misPokemones[indice].ataque}\n'
-                     f'Daño Especial: {misPokemones[indice].daño_especial}\n'
-                     f'Defensa: {misPokemones[indice].defensa}\n'
-                     f'Vida: {misPokemones[indice].vida}\n'
-                     f'Nivel: {misPokemones[indice].nivel}\n')
+                    print('\n¡Muy bien!, las nuevas estadísticas de tu Pokémon son:\n'
+                         f'Ataque: {misPokemones[indice].ataque}\n'
+                         f'Daño Especial: {misPokemones[indice].daño_especial}\n'
+                         f'Defensa: {misPokemones[indice].defensa}\n'
+                         f'Vida: {misPokemones[indice].vida}\n'
+                         f'Nivel: {misPokemones[indice].nivel}\n')
 
         elif opcion == '4':
             import random
             PSalvaje = random.choice(PEnemigos)
-            print(f'¡Un {PSalvaje} ha aparecido!\n'
+            print(f'¡Un {PSalvaje.nombre} ha aparecido!\n'
                   f'{PSalvaje.detallesPokemon()}'
                   '¿Qué vas a hacer ahora?\n'
                   '1-Pasar Turno      2-Ataque normal\n'
-                  '3-Ataque especial  3-Huir')
+                  '3-Ataque especial  0-Huir')
 
         elif opcion == '5':
             verPokemones()
@@ -315,7 +369,23 @@ def main():
                 else:
                     print('Ups. Ese tipo de Pokémon no existe. U.U\n')
 
-            nombre = input('Ingresa el nombre del Pokémon: ')
+            nombre = input('Ingresa el nombre del Pokémon: ').strip()
+
+            while True:
+                try:
+                    i = int(input('¿Cuántas evoluciones adicionales tendrá el Pokémon? (0 si no tiene): '))
+                    if i < 0 or i > 2:
+                        raise ValueError
+                except ValueError:
+                    print('Ups. Ese valor no es válido. :p\n')
+                else:
+                    break
+
+            evos = [nombre]
+            for n in range(i):
+                evo_nombre = input(f'Ingresa el nombre de la evolución {n + 1}: ')
+                evos.append(evo_nombre)
+
             descripcion = input('Ingresa una breve descripción del Pokémon: ')
 
             while True:
@@ -375,8 +445,10 @@ def main():
             elif tipo == 'hierba':
                 nuevo_pokemon = Hierba(nombre, descripcion, ataque, defensa, vida, daño_especial)
 
+            nuevo_pokemon.evos = evos
+
             PEnemigos.append(nuevo_pokemon)
-            print(f'\n¡Nuevo Pokémon enemigo {nombre} creado exitosamente! :O\n')
+            print(f"\n¡Nuevo Pokémon enemigo {nuevo_pokemon.nombre} creado exitosamente! :O\n")
             print('Aquí están los detalles de tu nuevo Pokémon enemigo:\n')
             nuevo_pokemon.detallesPokemon()
             print('¡Ahora puedes desafiarlo en combate desde el menú principal! >:)\n')
