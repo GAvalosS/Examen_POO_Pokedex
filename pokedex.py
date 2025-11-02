@@ -186,20 +186,40 @@ def mostrarMenu():
           '0.   Salir')
 
 
-def buscarPokemon():
+def buscarPokemon(pokemon, atrapado):
     i = 1
-    PBuscado = input()
-    for p in misPokemones:
-        if p.nombre.lower() == PBuscado.lower():
-            indice = i - 1
-            return indice
-        else:
-            i += 1
-    if i > len(misPokemones):
-        print(f'\n¡Oh no, {nombre_usuario}! Parece que aún no tienes ese Pokémon atrapado. UnU\n'
-              'Vamos por él. :D\n')
-        return None
 
+    if pokemon is None:
+        print('Ingresa el nombre de tu Pokémon: ')
+        PBuscado = input()
+    else:
+        PBuscado = pokemon
+
+    if atrapado:
+        for p in misPokemones:
+            if p.nombre.lower() == PBuscado.lower():
+                indice = i - 1
+                return indice
+            else:
+                i += 1
+
+        if i > len(misPokemones):
+            print(f'\n¡Oh no, {nombre_usuario}! Parece que aún no tienes ese Pokémon atrapado. UnU\n'
+                  'Vamos por él. :D\n')
+            return None
+
+    else:
+        for p in PEnemigos:
+            if p.nombre.lower() == PBuscado.lower():
+                indice = i - 1
+                return indice
+            else:
+                i += 1
+
+        if i > len(PEnemigos):
+            print(f'\n¡Oh no, {nombre_usuario}! Parece que ese Pokémon no existe en la Pokédex. UnU\n'
+                  '¿Quieres crear uno nuevo desde el menú principal? :D\n')
+            return None
 
 def main():
     print('\n¡Bienvenido al Pokédex!\n')
@@ -244,23 +264,23 @@ def main():
         opcion = input(f'¡{nombre_usuario}! Selecciona una opción del menú: ')
 
         if opcion == '1':
-            print('\nIngresa el nombre de tu Pokémon para ver sus detalles: ')
-            indice = buscarPokemon()
+            print('\n¿Qué Pokémon quieres ver?   0.0')
+            indice = buscarPokemon(None, True)
             if indice is not None:
                 print('\n--- Detalles de tu Pokémon ---\n')
                 misPokemones[indice].detallesPokemon()
 
         elif opcion == '2':
-            print('\nIngresa el nombre de tu Pokémon para que hable: ')
-            indice = buscarPokemon()
+            print('\nHaz que tu Pokémon hable  :D')
+            indice = buscarPokemon(None, True)
             if indice is not None:
                 misPokemones[indice].hablar()
 
         elif opcion == '3':
             print('\n--- Entrenamiento de Pokémon ---')
             verPokemones()
-            print("Seleccione al Pokémon que desea entrenar: ")
-            indice = buscarPokemon()
+            print("Vamos a entrenar a tu Pokémon >:)")
+            indice = buscarPokemon(None, True)
 
             if indice is not None:
                 while True:    
@@ -346,13 +366,126 @@ def main():
                          f'Nivel: {misPokemones[indice].nivel}\n')
 
         elif opcion == '4':
-            import random
-            PSalvaje = random.choice(PEnemigos)
-            print(f'¡Un {PSalvaje.nombre} ha aparecido!\n'
-                  f'{PSalvaje.detallesPokemon()}'
-                  '¿Qué vas a hacer ahora?\n'
-                  '1-Pasar Turno      2-Ataque normal\n'
-                  '3-Ataque especial  0-Huir')
+            import random, copy
+
+            plantilla = random.choice(PEnemigos)
+            PSalvaje = copy.deepcopy(plantilla)
+            copiaMiPokemon = copy.deepcopy(misPokemones[0])
+
+            print('\n--- Combate Pokémon ---\n')
+            print(f'¡Un {PSalvaje.nombre} salvaje ha aparecido! :O\n')
+            PSalvaje.detallesPokemon()
+            print('¿Qué vas a hacer ahora?\n'
+                  '     1-  Pasar Turno           2-  Ataque normal\n'
+                  '     3-  Ataque especial       0-  Huir')
+            
+            
+            while True:
+                accion = input('Selecciona una acción: ')
+                if accion == '1':
+                    print(f'\n{nombre_usuario} ha decidido pasar el turno.\n')
+
+                elif accion == '2':
+                    if PSalvaje.defensa > 0:
+                        PSalvaje.defensa -= misPokemones[0].ataque
+                        if PSalvaje.defensa < 0:
+                            PSalvaje.vida += PSalvaje.defensa
+                            PSalvaje.defensa = 0
+
+                    else:
+                        PSalvaje.vida -= misPokemones[0].ataque
+                        if PSalvaje.vida < 0:
+                            PSalvaje.vida = 0
+                    
+                    print(f'\n¡Tu {misPokemones[0].nombre} ha atacado a {PSalvaje.nombre} salvaje con un ataque normal!\n'
+                          f'Defensa de {PSalvaje.nombre}:    {PSalvaje.defensa}.\n'
+                          f'Vida de {PSalvaje.nombre}:       {PSalvaje.vida}.\n')
+
+                elif accion == '3':
+                    if PSalvaje.defensa > 0:
+                        PSalvaje.defensa -= misPokemones[0].daño_especial
+                        if PSalvaje.defensa < 0:
+                            PSalvaje.vida += PSalvaje.defensa
+                            PSalvaje.defensa = 0
+                    
+                    else:
+                        PSalvaje.vida -= misPokemones[0].daño_especial
+                    
+                    if PSalvaje.vida < 0:
+                        PSalvaje.vida = 0
+                    
+                    print(f'\n¡Tu {misPokemones[0].nombre} ha usado {misPokemones[0].ataque_especial} en {PSalvaje.nombre} salvaje!\n'
+                          f'Defensa de {PSalvaje.nombre}:    {PSalvaje.defensa}.\n'
+                          f'Vida de {PSalvaje.nombre}:       {PSalvaje.vida}.\n')
+
+                elif accion == '0':
+                    print(f'\n{nombre_usuario} ha decidido huir del combate.\n'
+                          'Vámonos que aquí espantan.  XD')
+                    break
+
+                else:
+                    print('Ups. Parece que aún no existe esa opción. T-T\n')
+
+                if PSalvaje.vida <= 0:
+                    print(f'\n¡Felicidades, {nombre_usuario}! Has derrotado a {PSalvaje.nombre}.\n')
+                    PSalvaje.vida = plantilla.vida
+                    PSalvaje.defensa = plantilla.defensa
+                    PSalvaje.atrapado = True
+                    misPokemones.append(PSalvaje)
+                    print(f'¡Has atrapado a {PSalvaje.nombre}!\n')
+                    break
+
+                print('~~~~~~~~~~~~~~~~~~~~~~')
+                print('¡Es turno del rival!')
+                opcionEnemigo = random.randrange(0,9)
+
+                if opcionEnemigo == 1 or opcionEnemigo == 2 or opcionEnemigo == 3 or opcionEnemigo == 4 or opcionEnemigo == 5 or opcionEnemigo == 6 or opcionEnemigo == 7:
+                    if misPokemones[0].defensa > 0:
+                        misPokemones[0].defensa -= PSalvaje.ataque
+                        if misPokemones[0].defensa < 0:
+                            misPokemones[0].vida += misPokemones[0].defensa
+                            misPokemones[0].defensa = 0
+
+                    else:
+                        misPokemones[0].vida -= PSalvaje.ataque
+                        if misPokemones[0].vida < 0:
+                            misPokemones[0].vida = 0
+                    
+                    print(f'\n¡{PSalvaje.nombre} salvaje ha atacado a tu {misPokemones[0].nombre} con un ataque normal!\n'
+                          f'Defensa de {misPokemones[0].nombre}:    {misPokemones[0].defensa}.\n'
+                          f'Vida de {misPokemones[0].nombre}:       {misPokemones[0].vida}.\n')
+
+                elif opcionEnemigo == 8 or opcionEnemigo == 9:
+                    if misPokemones[0].defensa > 0:
+                        misPokemones[0].defensa -= PSalvaje.daño_especial
+                        if misPokemones[0].defensa < 0:
+                            misPokemones[0].vida += misPokemones[0].defensa
+                            misPokemones[0].defensa = 0
+
+                    else:
+                        misPokemones[0].vida -= PSalvaje.daño_especial
+                        if misPokemones[0].vida < 0:
+                            misPokemones[0].vida = 0
+                    
+                    print(f'\n¡{PSalvaje.nombre} salvaje ha usado {PSalvaje.ataque_especial} en tu {misPokemones[0].nombre}!\n'
+                          f'Defensa de {misPokemones[0].nombre}:    {misPokemones[0].defensa}.\n'
+                          f'Vida de {misPokemones[0].nombre}:       {misPokemones[0].vida}.\n')
+
+                elif opcionEnemigo == 0:
+                    print(f'\n{PSalvaje.nombre} ha escapado del combate.\n'
+                          'Creo que somos demasiado fuertes.  XD')
+                    break
+
+                else:
+                    pass
+
+                if misPokemones[0].vida <= 0:
+                    misPokemones[0].defensa = copiaMiPokemon.defensa
+                    misPokemones[0].vida = copiaMiPokemon.vida
+                    print(f'{PSalvaje.nombre} nos ha derrotado, tal vez tengamos mas suerte la próxima. TnT')
+                    break
+
+                print('~~~~~~~~~~~~~~~~~~~~~~')
 
         elif opcion == '5':
             verPokemones()
@@ -459,7 +592,7 @@ def main():
 
         else:
             print('Ups. Parece que aún no existe esa opción. T-T\n'
-                  '¿Qué te parece si lo intentas una de nuestro menú? :D\n')
+                  '¿Qué te parece si intentas una de nuestro menú? :D\n')
 
 
 main()
