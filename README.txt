@@ -70,6 +70,11 @@ ya se actualiza ataque_especial dentro de las funciones de subirAtaque y entrena
 Evoluciones añadidas
 Solucionados todos los errores que pude encontrar sobre el entrenamiento y las evoluciones
 
+2/11/2025
+Combate iniciado
+Funcion buscarPokemon actualizada para que no siempre sea por input
+Mecanica de combate finalizada
+
 PENDIENTE:
 Punto 4.2
 Comentario de líneas 69 y 70
