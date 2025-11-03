@@ -145,7 +145,7 @@ class Hierba(Pokemon):
 
 PEnemigos = []
 
-PEnemigo = Agua('Squirtle', 'Es una tortuga :D', 500, 130, 180, 95)
+PEnemigo = Agua('Squirtle', 'Es una tortuga :D', 50, 130, 180, 95)
 evos = ['Squirtle', 'Wartortle', 'Blastoise']
 PEnemigo.evos = evos
 PEnemigos.append(PEnemigo)
