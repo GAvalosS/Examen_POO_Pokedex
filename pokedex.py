@@ -544,12 +544,12 @@ Tenemos 4 tipos de Pokémon disponibles:
                     print(
                         f'\n¡Tu {misPokemones[indice].nombre} ha atacado a {PSalvaje.nombre} salvaje con un ataque normal!\n'
                         f'Defensa de {PSalvaje.nombre}:    {PSalvaje.defensa}.\n'
-                        f'Vida de {PSalvaje.nombre}:       {PSalvaje.vida}.\n')
+                        f'Vida de {PSalvaje.nombre}:       {PSalvaje.vida} ({(PSalvaje.vida/plantilla.vida*100):.2f}%).\n')
                     cargador += 1
 
                 elif accion == '3':
                     if cargador != 0:
-                        if cargador%4 == 0:
+                        if cargador%3 == 0:
                             if PSalvaje.defensa > 0:
                                 PSalvaje.defensa -= misPokemones[indice].daño_especial
                                 if PSalvaje.defensa < 0:
@@ -567,7 +567,7 @@ Tenemos 4 tipos de Pokémon disponibles:
                             print(
                                 f'\n¡Tu {misPokemones[indice].nombre} ha usado {misPokemones[indice].ataque_especial} en {PSalvaje.nombre} salvaje!\n'
                                 f'Defensa de {PSalvaje.nombre}:    {PSalvaje.defensa}.\n'
-                                f'Vida de {PSalvaje.nombre}:       {PSalvaje.vida}.\n')
+                                f'Vida de {PSalvaje.nombre}:       {PSalvaje.vida} ({(PSalvaje.vida/plantilla.vida*100):.2f}%).\n')
                         else:
                             print("No abuses de tus ataques especiales >:T")
                     else:
@@ -609,7 +609,7 @@ Tenemos 4 tipos de Pokémon disponibles:
                     print(
                         f'\n¡{PSalvaje.nombre} salvaje ha atacado a tu {misPokemones[indice].nombre} con un ataque normal!\n'
                         f'Defensa de {misPokemones[indice].nombre}:    {misPokemones[indice].defensa}.\n'
-                        f'Vida de {misPokemones[indice].nombre}:       {misPokemones[indice].vida}({misPokemones[indice].vida/copiaMiPokemon.vida*100}%).\n')
+                        f'Vida de {misPokemones[indice].nombre}:       {misPokemones[indice].vida} ({(misPokemones[indice].vida/copiaMiPokemon.vida*100):.2f}%).\n')
 
                 elif opcionEnemigo == 8 or opcionEnemigo == 9:
                     if misPokemones[indice].defensa > 0:
@@ -626,7 +626,7 @@ Tenemos 4 tipos de Pokémon disponibles:
                     print(
                         f'\n¡{PSalvaje.nombre} salvaje ha usado {PSalvaje.ataque_especial} en tu {misPokemones[0].nombre}!\n'
                         f'Defensa de {misPokemones[indice].nombre}:    {misPokemones[indice].defensa}.\n'
-                        f'Vida de {misPokemones[indice].nombre}:       {misPokemones[indice].vida}.\n')
+                        f'Vida de {misPokemones[indice].nombre}:       {misPokemones[indice].vida} ({(misPokemones[indice].vida/copiaMiPokemon.vida*100):.2f}%).\n')
 
                 elif opcionEnemigo == 0:
                     print(f'\n{PSalvaje.nombre} ha escapado del combate.\n'
