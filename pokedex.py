@@ -507,7 +507,6 @@ Tenemos 4 tipos de Pokémon disponibles:
 
             plantilla = random.choice(PEnemigos)
             PSalvaje = copy.deepcopy(plantilla)
-            copiaMiPokemon = copy.deepcopy(misPokemones[0])
 
             print('\n--- Combate Pokémon ---\n')
             print(f'¡Un {PSalvaje.nombre} salvaje ha aparecido! :O\n')
@@ -518,6 +517,8 @@ Tenemos 4 tipos de Pokémon disponibles:
                 indice = buscarPokemon(None, True)
                 if indice is not None:
                     break
+            copiaMiPokemon = copy.deepcopy(misPokemones[indice])
+
             print('¿Qué vas a hacer ahora?\n'
                   '     1-  Pasar Turno           2-  Ataque normal\n'
                   '     3-  Ataque especial       0-  Huir')
