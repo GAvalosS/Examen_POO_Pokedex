@@ -1,3 +1,5 @@
+import os
+
 class Pokemon:
     nombre = 'Sin Pokémon'
     evos = []
@@ -170,7 +172,10 @@ misPokemones = []
 
 def verPokemones():
     print('\n--- Tus Pokémons Atrapados ---\n')
+    j = 0
     for i in misPokemones:
+        j += 1
+        print(f'--------- No. {j} ---------')
         i.detallesPokemon()
 
 
@@ -383,18 +388,26 @@ Tenemos 4 tipos de Pokémon disponibles:
  `"^--'..'   '-`-^-' --    `-^-'`.''"""""`.,^.`.--' ''')
 
     while True:
-        eleccion = int(input('¿Cuál te gustaría atrapar? (Ingresa el número correspondiente): '))
-        if eleccion >= 1 and eleccion <= 4:
-            PDisponibles = PEnemigos
-            PElegido = PDisponibles[eleccion - 1]
-            PElegido.atrapado = True
-            misPokemones.append(PElegido)
-            print(f'\n¡Felicidades, {nombre_usuario}! Has atrapado a {PElegido.nombre}.\n'
-                  '¡Cuídalo bien y entrenen juntos para convertirse en los mejores!\n')
-            break
+        try:
+            eleccion = int(input('¿Cuál te gustaría atrapar? (Ingresa el número correspondiente): '))
+        except ValueError:
+                print('Ups. Parece que ese número no está dentro de las opciones. :(\n'
+                      '¿Qué te parece si lo intentas de nuevo? :D\n')
         else:
-            print('Ups. Parece que ese número no está dentro de las opciones. :(\n'
-                  '¿Qué te parece si lo intentas de nuevo? :D\n')
+            if eleccion >= 1 and eleccion <= 4:
+                PDisponibles = PEnemigos
+                PElegido = PDisponibles[eleccion - 1]
+                PElegido.atrapado = True
+                misPokemones.append(PElegido)
+                os.system('cls')
+                print(f'\n¡Felicidades, {nombre_usuario}! Has atrapado a {PElegido.nombre}.\n'
+                      '¡Cuídalo bien y entrenen juntos para convertirse en los mejores!\n')
+                break
+            else:
+                print('Ups. Parece que ese número no está dentro de las opciones. :(\n'
+                      '¿Qué te parece si lo intentas de nuevo? :D\n')
+    miPokemon = PElegido
+    indice = buscarPokemon(miPokemon.nombre, True)
 
     print('Aquí están los detalles de tu nuevo Pokémon:\n')
     verPokemones()
@@ -405,52 +418,52 @@ Tenemos 4 tipos de Pokémon disponibles:
         opcion = input(f'¡{nombre_usuario}! Selecciona una opción del menú: ')
 
         if opcion == '1':
-            print('\n¿Qué Pokémon quieres ver?   0.0')
-            indice = buscarPokemon(None, True)
+            os.system('cls')
             if indice is not None:
                 print('\n--- Detalles de tu Pokémon ---\n')
                 misPokemones[indice].detallesPokemon()
 
         elif opcion == '2':
+            os.system('cls')
             print('\nHaz que tu Pokémon hable  :D')
-            indice = buscarPokemon(None, True)
             if indice is not None:
                 misPokemones[indice].hablar()
 
         elif opcion == '3':
+            os.system('cls')
             print('\n--- Entrenamiento de Pokémon ---')
-            verPokemones()
             print("Vamos a entrenar a tu Pokémon >:)")
-            indice = buscarPokemon(None, True)
 
             if indice is not None:
                 while True:
-                    op = input('\n-----Opciones de entrenamiento:-----\n'
-                               '    1-      Entrenamiento normal\n'
-                               '    2-      Entrenamiento individual\n'
-                               '    3-      Entrenamiento intensivo\n'
-                               '    4-      Entrenamiento personalizado\n'
-                               '    0-      Salir\n'
-                               '-------------------------------------\n'
-                               'Seleccione una opción: ')
+                    print('\n-----Opciones de entrenamiento:-----\n'
+                          '    1-      Entrenamiento normal\n'
+                          '    2-      Entrenamiento individual\n'
+                          '    3-      Entrenamiento intensivo\n'
+                          '    4-      Entrenamiento personalizado\n'
+                          '    0-      Salir\n'
+                          '-------------------------------------')
+                    op = input('Seleccione una opción: ')
+                    os.system('cls')
+                    print(f'Opción: {op}.')
 
                     if op == '1':
                         misPokemones[indice].entrenar()
 
                     elif op == '2':
                         estadistica = input('Seleccione la estadística que desea mejorar:\n'
-                                            '   -Ataque\n'
-                                            '   -Defensa\n'
-                                            '   -Vida\n')
+                                            '   -Ataque     (a)\n'
+                                            '   -Defensa    (b)\n'
+                                            '   -Vida       (c)\n')
                         estadistica.lower()
                         while True:
-                            if estadistica == 'ataque':
+                            if estadistica == 'a':
                                 misPokemones[indice].subirAtaque(10)
                                 break
-                            elif estadistica == 'defensa':
+                            elif estadistica == 'b':
                                 misPokemones[indice].subirDefensa(10)
                                 break
-                            elif estadistica == 'vida':
+                            elif estadistica == 'c':
                                 misPokemones[indice].subirVida(10)
                                 break
                             else:
@@ -459,26 +472,26 @@ Tenemos 4 tipos de Pokémon disponibles:
                                 estadistica = input('Seleccione la estadística que desea mejorar:\n')
 
                     elif op == '3':
-                        boost = int(input('\n¿En cuánto quiere mejorar las estadísticas de su Pokémon?'))
+                        boost = int(input('\n¿En cuánto quiere mejorar las estadísticas de su Pokémon?: '))
                         misPokemones[indice].subirAtaque(boost)
                         misPokemones[indice].subirDefensa(boost)
                         misPokemones[indice].subirVida(boost)
 
                     elif op == '4':
                         estadistica = input('\nSeleccione la estadística que desea mejorar:\n'
-                                            '   -Ataque\n'
-                                            '   -Defensa\n'
-                                            '   -Vida\n')
+                                            '   -Ataque     (a)\n'
+                                            '   -Defensa    (b)\n'
+                                            '   -Vida       (c)\n')
                         while True:
-                            if estadistica == 'ataque':
+                            if estadistica == 'a':
                                 boost = int(input('¿En cuánto quiere mejorar la estadística de su Pokémon?\n'))
                                 misPokemones[indice].subirAtaque(boost)
                                 break
-                            elif estadistica == 'defensa':
+                            elif estadistica == 'b':
                                 boost = int(input('¿En cuánto quiere mejorar la estadística de su Pokémon?\n'))
                                 misPokemones[indice].subirDefensa(boost)
                                 break
-                            elif estadistica == 'vida':
+                            elif estadistica == 'c':
                                 boost = int(input('¿En cuánto quiere mejorar la estadística de su Pokémon?\n'))
                                 misPokemones[indice].subirVida(boost)
                                 break
@@ -502,6 +515,7 @@ Tenemos 4 tipos de Pokémon disponibles:
                           f'Nivel: {misPokemones[indice].nivel}\n')
 
         elif opcion == '4':
+            os.system('cls')
 
             import random, copy
 
@@ -511,20 +525,17 @@ Tenemos 4 tipos de Pokémon disponibles:
             print('\n--- Combate Pokémon ---\n')
             print(f'¡Un {PSalvaje.nombre} salvaje ha aparecido! :O\n')
             PSalvaje.detallesPokemon()
-            while True:
-                print("¡Rápido!, ¿Qué Pokémon vas a elegir?")
-                verPokemones()
-                indice = buscarPokemon(None, True)
-                if indice is not None:
-                    break
+
             copiaMiPokemon = copy.deepcopy(misPokemones[indice])
 
-            print('¿Qué vas a hacer ahora?\n'
-                  '     1-  Pasar Turno           2-  Ataque normal\n'
-                  '     3-  Ataque especial       0-  Huir')
             cargador = 0
             while True:
+                print('¿Qué vas a hacer ahora?\n'
+                      '     1-  Pasar Turno           2-  Ataque normal\n'
+                      '     3-  Ataque especial       0-  Huir')
                 accion = input('Selecciona una acción: ')
+                os.system('cls')
+
                 if accion == '1':
                     print(f'\n{nombre_usuario} ha decidido pasar el turno.\n')
 
@@ -648,11 +659,36 @@ Tenemos 4 tipos de Pokémon disponibles:
             misPokemones[indice].defensa = copiaMiPokemon.defensa
 
         elif opcion == '5':
+            os.system('cls')
             verPokemones()
             print('Vas por buen camino, ¡sigue así! :3\n')
             print('------------------------------\n')
 
+            while True:
+                cambiar = input('¿Deseas cambiar de pokemon? (s/n): ')
+                if cambiar.lower() == 's':
+                    try:
+                        noPokemon = int(input('Ingrese el número de pokemon: '))
+                        if noPokemon > len(misPokemones):
+                            raise ValueError
+                    except ValueError:
+                        print('Ups. Ese número no está en la lista.')
+                    else:
+                        miPokemon = misPokemones[noPokemon - 1]
+                        indice = buscarPokemon(miPokemon.nombre, True)
+                        os.system('cls')
+                        print(f'\n¡Haz elegido a {miPokemon.nombre}!')
+                        miPokemon.detallesPokemon()
+                        print('¡Que continúe la aventura! >:D\n')
+                        break
+                elif cambiar.lower() == 'n':
+                    print('De acuerdo. :D\n')
+                    break
+                else:
+                    print('Ups, no sé interpretar eso Unu.\n')
+
         elif opcion == '6':
+            os.system('cls')
             print('Excelente, vamos a crear un nuevo Pokémon enemigo para que puedas combatir.\n')
 
             while True:
@@ -725,12 +761,12 @@ Tenemos 4 tipos de Pokémon disponibles:
             print('¡Ahora puedes desafiarlo en combate desde el menú principal! >:)\n')
 
         elif opcion == '0':
-            print(f'\n¡Gracias por usar el Pokédex, {nombre_usuario}! ¡Vuelve pronto! :D\nMe piro vampiro')
+            print(f'\n¡Gracias por usar el Pokédex, {nombre_usuario}! ¡Vuelve pronto! :D\nMe piro vampiro\n')
             break
 
         else:
+            os.system('cls')
             print('Ups. Parece que aún no existe esa opción. T-T\n'
                   '¿Qué te parece si intentas una de nuestro menú? :D\n')
-
 
 main()
