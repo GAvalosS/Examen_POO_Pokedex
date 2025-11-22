@@ -228,6 +228,92 @@ def buscarPokemon(pokemon, atrapado):
                   '¿Quieres crear uno nuevo desde el menú principal? :D\n')
             return None
 
+def registro_batallas():
+    while True:
+        print("\n------- REGISTRO DE BATALLAS -------")
+        print("    1.     Ver lista de batallas")
+        print("    2.     Leer una batalla")
+        print("    3.     Eliminar una batalla")
+        print("    0.     Regresar al menú principal")
+
+        opcion = input("Selecciona una opción: ")
+        os.system('cls')
+
+        if opcion == "1":
+            listar_batallas()
+
+        elif opcion == "2":
+            leer_batalla()
+
+        elif opcion == "3":
+            eliminar_batalla()
+
+        elif opcion == "0":
+            break
+
+        else:
+            print("Opción no válida. Intenta de nuevo.")
+
+def listar_batallas():
+    print("\n--- Lista de batallas registradas ---")
+    archivos = [f for f in os.listdir() if f.startswith("batalla_") and f.endswith(".txt")]
+
+    if not archivos:
+        print("No hay registros de batalla.")
+        return
+
+    for i, archivo in enumerate(archivos, start=1):
+        print(f"{i}. {archivo}")
+
+def leer_batalla():
+    listar_batallas()
+    archivos = [f for f in os.listdir() if f.startswith("batalla_") and f.endswith(".txt")]
+
+    if not archivos:
+        return
+
+    try:
+        num = int(input("\nIngresa el número del archivo que deseas leer: ")) - 1
+
+        if num < 0 or num >= len(archivos):
+            print("Número inválido.")
+            return
+
+        archivo = archivos[num]
+
+        print(f"\n--- {archivo} ---")
+        with open(archivo, "r") as f:
+            print(f.read())
+
+    except ValueError:
+        print("Debes ingresar un número.")
+
+def eliminar_batalla():
+    listar_batallas()
+    archivos = [f for f in os.listdir() if f.startswith("batalla_") and f.endswith(".txt")]
+
+    if not archivos:
+        return
+
+    try:
+        num = int(input("\nIngresa el número del archivo que deseas eliminar: ")) - 1
+
+        if num < 0 or num >= len(archivos):
+            print("Número inválido.")
+            return
+
+        archivo = archivos[num]
+
+        confirm = input(f"¿Seguro que deseas eliminar '{archivo}'? (s/n): ").lower()
+        if confirm == "s":
+            os.remove(archivo)
+            print("Archivo eliminado.")
+        else:
+            print("Cancelado.")
+
+    except ValueError:
+        print("Debes ingresar un número.")
+
 
 def main():
     print('\n-------------------¡Bienvenido al mundo de:-------------------\n')
@@ -846,6 +932,16 @@ Detalles:
             print('Aquí están los detalles de tu nuevo Pokémon enemigo:\n')
             nuevo_pokemon.detallesPokemon()
             print('¡Ahora puedes desafiarlo en combate desde el menú principal! >:)\n')
+
+        elif opcion == '7':
+            pass
+
+        elif opcion == '8':
+            os.system('cls')
+            registro_batallas()
+
+        elif opcion == '9':
+            pass
 
         elif opcion == '0':
             print(f'\n¡Gracias por usar el Pokédex, {nombre_usuario}! ¡Vuelve pronto! :D\nMe piro vampiro\n')

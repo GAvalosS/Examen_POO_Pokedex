@@ -1,4 +1,5 @@
-import os
+import os, random, copy
+from datetime import datetime
 
 class Pokemon:
     nombre = 'Sin Pokémon'
@@ -39,9 +40,7 @@ class Pokemon:
 
     def entrenar(self):
         self.ataque += 10
-        self.daño_especial += 11
         self.defensa += 10
-        self.vida += 10
         self.nivel += 20
 
         if self.nivel >= 100:
@@ -147,22 +146,22 @@ class Hierba(Pokemon):
 
 PEnemigos = []
 
-PEnemigo = Agua('Squirtle', 'Es una tortuga :D', 50, 130, 180, 95)
+PEnemigo = Agua('Squirtle', 'Es una tortuga :D', 50, 130, 180, 120)
 evos = ['Squirtle', 'Wartortle', 'Blastoise']
 PEnemigo.evos = evos
 PEnemigos.append(PEnemigo)
 
-PEnemigo = Fuego('Charmander', 'Es un lagarto :D', 55, 95, 160, 100)
+PEnemigo = Fuego('Charmander', 'Es un lagarto :D', 55, 95, 160, 125)
 evos = ['Charmander', 'Charmeleon', 'Charizard']
 PEnemigo.evos = evos
 PEnemigos.append(PEnemigo)
 
-PEnemigo = Electrico('Pikachu', 'Es un ratón :D', 80, 110, 190, 85, evolucion=2)
+PEnemigo = Electrico('Pikachu', 'Es un ratón :D', 80, 110, 190, 110, evolucion=2)
 evos = ['Pichu', 'Pikachu', 'Raichu']
 PEnemigo.evos = evos
 PEnemigos.append(PEnemigo)
 
-PEnemigo = Hierba('Bulbasaur', 'Es una planta :D', 50, 115, 180, 90)
+PEnemigo = Hierba('Bulbasaur', 'Es una planta :D', 50, 115, 180, 115)
 evos = ['Bulbasaur', 'Ivysaur', 'Venusaur']
 PEnemigo.evos = evos
 PEnemigos.append(PEnemigo)
@@ -180,14 +179,18 @@ def verPokemones():
 
 
 def mostrarMenu():
-    print('\n------ Menú Principal ------\n'
-          '1.   Detalles de mi Pokémon\n'
-          '2.   Hablar Pokémon.\n'
-          '3.   Entrenar Pokémon.\n'
-          '4.   Combatir.\n'
-          '5.   Ver Pokémon atrapados.\n'
-          '6.   Crear Pokémon enemigo.\n'
-          '0.   Salir')
+    print('\n========= MENÚ PRINCIPAL =========\n'
+          '   (1)     Detalles de mi Pokémon\n'
+          '   (2)     Hablar Pokémon.\n'
+          '   (3)     Entrenar Pokémon.\n'
+          '   (4)     Combatir.\n'
+          '   (5)     Ver Pokémon atrapados.\n'
+          '   (6)     Crear Pokémon enemigo.\n'
+          '   (7)     Prueba de Manejo de Errores.\n'
+          '   (8)     Registro de Batallas.\n'
+          '   (9)     Guardar Partida.\n'
+          '   (0)     Salir.\n'
+          '==================================')
 
 
 def buscarPokemon(pokemon, atrapado):
@@ -224,6 +227,92 @@ def buscarPokemon(pokemon, atrapado):
             print(f'\n¡Oh no, {nombre_usuario}! Parece que ese Pokémon no existe en la Pokédex. UnU\n'
                   '¿Quieres crear uno nuevo desde el menú principal? :D\n')
             return None
+
+def registro_batallas():
+    while True:
+        print("\n------- REGISTRO DE BATALLAS -------")
+        print("    1.     Ver lista de batallas")
+        print("    2.     Leer una batalla")
+        print("    3.     Eliminar una batalla")
+        print("    0.     Regresar al menú principal")
+
+        opcion = input("Selecciona una opción: ")
+        os.system('cls')
+
+        if opcion == "1":
+            listar_batallas()
+
+        elif opcion == "2":
+            leer_batalla()
+
+        elif opcion == "3":
+            eliminar_batalla()
+
+        elif opcion == "0":
+            break
+
+        else:
+            print("Opción no válida. Intenta de nuevo.")
+
+def listar_batallas():
+    print("\n--- Lista de batallas registradas ---")
+    archivos = [f for f in os.listdir() if f.startswith("batalla_") and f.endswith(".txt")]
+
+    if not archivos:
+        print("No hay registros de batalla.")
+        return
+
+    for i, archivo in enumerate(archivos, start=1):
+        print(f"{i}. {archivo}")
+
+def leer_batalla():
+    listar_batallas()
+    archivos = [f for f in os.listdir() if f.startswith("batalla_") and f.endswith(".txt")]
+
+    if not archivos:
+        return
+
+    try:
+        num = int(input("\nIngresa el número del archivo que deseas leer: ")) - 1
+
+        if num < 0 or num >= len(archivos):
+            print("Número inválido.")
+            return
+
+        archivo = archivos[num]
+
+        print(f"\n--- {archivo} ---")
+        with open(archivo, "r") as f:
+            print(f.read())
+
+    except ValueError:
+        print("Debes ingresar un número.")
+
+def eliminar_batalla():
+    listar_batallas()
+    archivos = [f for f in os.listdir() if f.startswith("batalla_") and f.endswith(".txt")]
+
+    if not archivos:
+        return
+
+    try:
+        num = int(input("\nIngresa el número del archivo que deseas eliminar: ")) - 1
+
+        if num < 0 or num >= len(archivos):
+            print("Número inválido.")
+            return
+
+        archivo = archivos[num]
+
+        confirm = input(f"¿Seguro que deseas eliminar '{archivo}'? (s/n): ").lower()
+        if confirm == "s":
+            os.remove(archivo)
+            print("Archivo eliminado.")
+        else:
+            print("Cancelado.")
+
+    except ValueError:
+        print("Debes ingresar un número.")
 
 
 def main():
@@ -515,9 +604,11 @@ Tenemos 4 tipos de Pokémon disponibles:
                           f'Nivel: {misPokemones[indice].nivel}\n')
 
         elif opcion == '4':
+            fecha = datetime.now().strftime("%d-%m-%Y")
+            hora = datetime.now().strftime("%H-%M")
+            nombrearchivo = f"batalla_{fecha}_{hora}.txt"
+            archivo = open(f"{nombrearchivo}", "a")
             os.system('cls')
-
-            import random, copy
 
             plantilla = random.choice(PEnemigos)
             PSalvaje = copy.deepcopy(plantilla)
@@ -526,18 +617,51 @@ Tenemos 4 tipos de Pokémon disponibles:
             print(f'¡Un {PSalvaje.nombre} salvaje ha aparecido! :O\n')
             PSalvaje.detallesPokemon()
 
+            archivo.write(f"""
+                          \n=== COMBATE POKEMON ===\n
+Entrenador: {nombre_usuario}
+Pokemon: {miPokemon.nombre}
+Detalles:
+        Vida: {miPokemon.vida}
+        Defensa: {miPokemon.defensa}
+        Ataque: {miPokemon.ataque}
+
+Enemigo: {PSalvaje.nombre}
+Detalles:
+        Vida: {PSalvaje.vida}
+        Defensa: {PSalvaje.defensa}
+        Ataque: {PSalvaje.ataque}
+
+""")
+
             copiaMiPokemon = copy.deepcopy(misPokemones[indice])
 
             cargador = 0
+            contadorTurno = 1
+            
             while True:
+
+                print('~~~~~~~~~~~~~~~~~~~~~~\n'
+                      f'Defensa de {copiaMiPokemon.nombre}:    {copiaMiPokemon.defensa}.\n'
+                      f'Vida de {copiaMiPokemon.nombre}:       {copiaMiPokemon.vida} (100%).\n'
+                      f'Ataque normal: {copiaMiPokemon.ataque}\n'
+                      f'{copiaMiPokemon.ataque_especial}: {copiaMiPokemon.daño_especial}\n')
+                print(f'Defensa de {plantilla.nombre}:    {plantilla.defensa}.\n'
+                      f'Vida de {plantilla.nombre}:       {plantilla.vida} (100).\n'
+                      f'Ataque normal: {plantilla.ataque}\n'
+                      f'{plantilla.ataque_especial}: {plantilla.daño_especial}')
+                print('~~~~~~~~~~~~~~~~~~~~~~\n')
                 print('¿Qué vas a hacer ahora?\n'
                       '     1-  Pasar Turno           2-  Ataque normal\n'
                       '     3-  Ataque especial       0-  Huir')
                 accion = input('Selecciona una acción: ')
-                os.system('cls')
+
+                archivo.write(f"==== TURNO {contadorTurno} ====\n")
 
                 if accion == '1':
+                    os.system('cls')
                     print(f'\n{nombre_usuario} ha decidido pasar el turno.\n')
+                    archivo.write(f'{nombre_usuario} ha decidido pasar el turno.\n\n')
 
                 elif accion == '2':
                     if PSalvaje.defensa > 0:
@@ -553,11 +677,17 @@ Tenemos 4 tipos de Pokémon disponibles:
                         if PSalvaje.vida < 0:
                             PSalvaje.vida = 0
 
+                    os.system('cls')
                     print(
                         f'\n¡Tu {misPokemones[indice].nombre} ha atacado a {PSalvaje.nombre} salvaje con un ataque normal!\n'
                         f'Defensa de {PSalvaje.nombre}:    {PSalvaje.defensa}.\n'
                         f'Vida de {PSalvaje.nombre}:       {PSalvaje.vida} ({(PSalvaje.vida/plantilla.vida*100):.2f}%).\n')
                     cargador += 1
+
+                    archivo.write(
+                        f'Tu {misPokemones[indice].nombre} ha atacado a {PSalvaje.nombre} salvaje con un ataque normal!\n'
+                        f'Defensa de {PSalvaje.nombre}:    {PSalvaje.defensa}.\n'
+                        f'Vida de {PSalvaje.nombre}:       {PSalvaje.vida} ({(PSalvaje.vida/plantilla.vida*100):.2f}%).\n\n')
 
                 elif accion == '3':
                     if cargador != 0:
@@ -576,18 +706,30 @@ Tenemos 4 tipos de Pokémon disponibles:
                             if PSalvaje.vida < 0:
                                 PSalvaje.vida = 0
 
+                            os.system('cls')
                             print(
                                 f'\n¡Tu {misPokemones[indice].nombre} ha usado {misPokemones[indice].ataque_especial} en {PSalvaje.nombre} salvaje!\n'
                                 f'Defensa de {PSalvaje.nombre}:    {PSalvaje.defensa}.\n'
                                 f'Vida de {PSalvaje.nombre}:       {PSalvaje.vida} ({(PSalvaje.vida/plantilla.vida*100):.2f}%).\n')
+                            
+                            archivo.write(
+                                f'Tu {misPokemones[indice].nombre} ha usado {misPokemones[indice].ataque_especial} en {PSalvaje.nombre} salvaje!\n'
+                                f'Defensa de {PSalvaje.nombre}:    {PSalvaje.defensa}.\n'
+                                f'Vida de {PSalvaje.nombre}:       {PSalvaje.vida} ({(PSalvaje.vida/plantilla.vida*100):.2f}%).\n\n')
+
                         else:
+                            os.system('cls')
                             print("No abuses de tus ataques especiales >:T")
+                            archivo.write(f"{nombre_usuario} quiso abusar de sus ataques especiales.\n\n")
                     else:
+                        os.system('cls')
                         print("No abuses de tus ataques especiales >:T")
+                        archivo.write(f"{nombre_usuario} quiso abusar de sus ataques especiales.\n\n")
 
                 elif accion == '0':
                     print(f'\n{nombre_usuario} ha decidido huir del combate.\n'
                           'Vámonos que aquí espantan.  XD')
+                    archivo.write(f"{nombre_usuario} ha decidido huir del combate.\n\n")
                     break
 
                 else:
@@ -600,9 +742,10 @@ Tenemos 4 tipos de Pokémon disponibles:
                     PSalvaje.atrapado = True
                     misPokemones.append(PSalvaje)
                     print(f'¡Has atrapado a {PSalvaje.nombre}!\n')
+                    archivo.write(f"\nResultado: Victoria! Has derrotado al Pokemon enemigo y lo has atrapado!")
                     break
 
-                print('~~~~~~~~~~~~~~~~~~~~~~')
+                print()
                 print('¡Es turno del rival!')
                 opcionEnemigo = random.randrange(0, 9)
 
@@ -622,6 +765,11 @@ Tenemos 4 tipos de Pokémon disponibles:
                         f'\n¡{PSalvaje.nombre} salvaje ha atacado a tu {misPokemones[indice].nombre} con un ataque normal!\n'
                         f'Defensa de {misPokemones[indice].nombre}:    {misPokemones[indice].defensa}.\n'
                         f'Vida de {misPokemones[indice].nombre}:       {misPokemones[indice].vida} ({(misPokemones[indice].vida/copiaMiPokemon.vida*100):.2f}%).\n')
+                    
+                    archivo.write(
+                        f'{PSalvaje.nombre} salvaje ha atacado a tu {misPokemones[indice].nombre} con un ataque normal!\n'
+                        f'Defensa de {misPokemones[indice].nombre}:    {misPokemones[indice].defensa}.\n'
+                        f'Vida de {misPokemones[indice].nombre}:       {misPokemones[indice].vida} ({(misPokemones[indice].vida/copiaMiPokemon.vida*100):.2f}%).\n\n')
 
                 elif opcionEnemigo == 8 or opcionEnemigo == 9:
                     if misPokemones[indice].defensa > 0:
@@ -640,9 +788,15 @@ Tenemos 4 tipos de Pokémon disponibles:
                         f'Defensa de {misPokemones[indice].nombre}:    {misPokemones[indice].defensa}.\n'
                         f'Vida de {misPokemones[indice].nombre}:       {misPokemones[indice].vida} ({(misPokemones[indice].vida/copiaMiPokemon.vida*100):.2f}%).\n')
 
+                    archivo.write(
+                        f'{PSalvaje.nombre} salvaje ha usado {PSalvaje.ataque_especial} en tu {misPokemones[0].nombre}!\n'
+                        f'Defensa de {misPokemones[indice].nombre}:    {misPokemones[indice].defensa}.\n'
+                        f'Vida de {misPokemones[indice].nombre}:       {misPokemones[indice].vida} ({(misPokemones[indice].vida/copiaMiPokemon.vida*100):.2f}%).\n\n')
+
                 elif opcionEnemigo == 0:
                     print(f'\n{PSalvaje.nombre} ha escapado del combate.\n'
                           'Creo que somos demasiado fuertes.  XD')
+                    archivo.write(f"{PSalvaje.nombre} escapó del combate.\n")
                     break
 
                 else:
@@ -652,11 +806,15 @@ Tenemos 4 tipos de Pokémon disponibles:
                     misPokemones[indice].defensa = copiaMiPokemon.defensa
                     misPokemones[indice].vida = copiaMiPokemon.vida
                     print(f'{PSalvaje.nombre} nos ha derrotado, tal vez tengamos mas suerte la próxima. TnT')
+                    archivo.write(f"\nResultado: Derrota! {PSalvaje.nombre} nos ha vencido.")
                     break
 
-                print('~~~~~~~~~~~~~~~~~~~~~~')
+                contadorTurno += 1
+
             misPokemones[indice].vida = copiaMiPokemon.vida
             misPokemones[indice].defensa = copiaMiPokemon.defensa
+            archivo.write(f"\n\nFecha y hora de la batalla: {fecha} {hora}")
+            archivo.close()
 
         elif opcion == '5':
             os.system('cls')
@@ -701,11 +859,14 @@ Tenemos 4 tipos de Pokémon disponibles:
             nombre = input('Ingresa el nombre del Pokémon: ').strip()
 
             while True:
-                i = int(input('¿Cuántas evoluciones adicionales tendrá el Pokémon? (0 si no tiene): '))
-                if i < 0 or i > 2:
-                    print('Ups. Ese valor no es válido. :p\n')
-                else:
-                    break
+                try:
+                    i = int(input('¿Cuántas evoluciones adicionales tendrá el Pokémon? (0 si no tiene): '))
+                    if i < 0 or i > 2:
+                        print('Ups. Ese valor no es válido. :p\n')
+                    else:
+                        break
+                except ValueError:
+                    print('Introduzca la cantidad como un número entero')
 
             evos = [nombre]
             for n in range(i):
@@ -715,33 +876,45 @@ Tenemos 4 tipos de Pokémon disponibles:
             descripcion = input('Ingresa una breve descripción del Pokémon: ')
 
             while True:
-                ataque = int(input('Ingresa el valor de ataque del Pokémon (1 - 1000): '))
-                if ataque < 1 or ataque > 1000:
-                    print('Ups. Ese valor no está dentro del rango. :p\n')
-                else:
-                    break
+                try:
+                    ataque = int(input('Ingresa el valor de ataque del Pokémon (1 - 1000): '))
+                    if ataque < 1 or ataque > 1000:
+                        print('Ups. Ese valor no está dentro del rango. :p\n')
+                    else:
+                        break
+                except ValueError:
+                    print('Introduzca la cantidad como un número entero')
 
             while True:
-                defensa = int(input('Ingresa el valor de defensa del Pokémon (1 - 1000): '))
-                if defensa < 1 or defensa > 1000:
-                    print('Ups. Ese valor no está dentro del rango. :p\n')
-                else:
-                    break
+                try:
+                    defensa = int(input('Ingresa el valor de defensa del Pokémon (1 - 1000): '))
+                    if defensa < 1 or defensa > 1000:
+                        print('Ups. Ese valor no está dentro del rango. :p\n')
+                    else:
+                        break
+                except ValueError:
+                    print('Introduzca la cantidad como un número entero')
 
             while True:
-                vida = int(input('Ingresa el valor de vida del Pokémon (1 - 1000): '))
-                if vida < 1 or vida > 1000:
-                    print('Ups. Ese valor no está dentro del rango. :p\n')
-                else:
-                    break
+                try:
+                    vida = int(input('Ingresa el valor de vida del Pokémon (1 - 1000): '))
+                    if vida < 1 or vida > 1000:
+                        print('Ups. Ese valor no está dentro del rango. :p\n')
+                    else:
+                        break
+                except ValueError:
+                    print('Introduzca la cantidad como un número entero')
 
 
             while True:
-                daño_especial = int(input('Ingresa el valor del daño especial del Pokémon (1 - 1000): '))
-                if daño_especial < 1 or daño_especial > 1000:
-                    print('Ups. Ese valor no está dentro del rango. :p\n')
-                else:
-                    break
+                try:
+                    daño_especial = int(input('Ingresa el valor del daño especial del Pokémon (1 - 1000): '))
+                    if daño_especial < 1 or daño_especial > 1000:
+                        print('Ups. Ese valor no está dentro del rango. :p\n')
+                    else:
+                        break
+                except ValueError:
+                    print('Introduzca la cantidad como un número entero')
 
             if tipo == 'agua':
                 nuevo_pokemon = Agua(nombre, descripcion, ataque, defensa, vida, daño_especial)
@@ -759,6 +932,16 @@ Tenemos 4 tipos de Pokémon disponibles:
             print('Aquí están los detalles de tu nuevo Pokémon enemigo:\n')
             nuevo_pokemon.detallesPokemon()
             print('¡Ahora puedes desafiarlo en combate desde el menú principal! >:)\n')
+
+        elif opcion == '7':
+            pass
+
+        elif opcion == '8':
+            os.system('cls')
+            registro_batallas()
+
+        elif opcion == '9':
+            pass
 
         elif opcion == '0':
             print(f'\n¡Gracias por usar el Pokédex, {nombre_usuario}! ¡Vuelve pronto! :D\nMe piro vampiro\n')
