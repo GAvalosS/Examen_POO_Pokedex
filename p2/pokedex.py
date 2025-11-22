@@ -39,9 +39,7 @@ class Pokemon:
 
     def entrenar(self):
         self.ataque += 10
-        self.daño_especial += 11
         self.defensa += 10
-        self.vida += 10
         self.nivel += 20
 
         if self.nivel >= 100:
@@ -147,22 +145,22 @@ class Hierba(Pokemon):
 
 PEnemigos = []
 
-PEnemigo = Agua('Squirtle', 'Es una tortuga :D', 50, 130, 180, 95)
+PEnemigo = Agua('Squirtle', 'Es una tortuga :D', 50, 130, 180, 120)
 evos = ['Squirtle', 'Wartortle', 'Blastoise']
 PEnemigo.evos = evos
 PEnemigos.append(PEnemigo)
 
-PEnemigo = Fuego('Charmander', 'Es un lagarto :D', 55, 95, 160, 100)
+PEnemigo = Fuego('Charmander', 'Es un lagarto :D', 55, 95, 160, 125)
 evos = ['Charmander', 'Charmeleon', 'Charizard']
 PEnemigo.evos = evos
 PEnemigos.append(PEnemigo)
 
-PEnemigo = Electrico('Pikachu', 'Es un ratón :D', 80, 110, 190, 85, evolucion=2)
+PEnemigo = Electrico('Pikachu', 'Es un ratón :D', 80, 110, 190, 110, evolucion=2)
 evos = ['Pichu', 'Pikachu', 'Raichu']
 PEnemigo.evos = evos
 PEnemigos.append(PEnemigo)
 
-PEnemigo = Hierba('Bulbasaur', 'Es una planta :D', 50, 115, 180, 90)
+PEnemigo = Hierba('Bulbasaur', 'Es una planta :D', 50, 115, 180, 115)
 evos = ['Bulbasaur', 'Ivysaur', 'Venusaur']
 PEnemigo.evos = evos
 PEnemigos.append(PEnemigo)
@@ -530,11 +528,22 @@ Tenemos 4 tipos de Pokémon disponibles:
 
             cargador = 0
             while True:
+                os.system('cls')
+                print('~~~~~~~~~~~~~~~~~~~~~~'
+                      f'Defensa de {misPokemones[indice].nombre}:    {misPokemones[indice].defensa}.\n'
+                      f'Vida de {misPokemones[indice].nombre}:       {misPokemones[indice].vida} ({(misPokemones[indice].vida/copiaMiPokemon.vida*100):.2f}%).\n'
+                      f'Ataque normal: {misPokemones[indice].ataque}\n'
+                      f'{misPokemones[indice].ataque_especial}: {misPokemones[indice].daño_especial}')
+                print('~~~~~~~~~~~~~~~~~~~~~~')
+                print(f'Defensa de {PSalvaje.nombre}:    {PSalvaje.defensa}.\n'
+                      f'Vida de {PSalvaje.nombre}:       {PSalvaje.vida} ({(PSalvaje.vida / plantilla.vida * 100):.2f}%).\n'
+                      f'Ataque normal: {PSalvaje.ataque}\n'
+                      f'{PSalvaje.ataque_especial}: {PSalvaje.daño_especial}')
+                print('~~~~~~~~~~~~~~~~~~~~~~')
                 print('¿Qué vas a hacer ahora?\n'
                       '     1-  Pasar Turno           2-  Ataque normal\n'
                       '     3-  Ataque especial       0-  Huir')
                 accion = input('Selecciona una acción: ')
-                os.system('cls')
 
                 if accion == '1':
                     print(f'\n{nombre_usuario} ha decidido pasar el turno.\n')
@@ -701,11 +710,14 @@ Tenemos 4 tipos de Pokémon disponibles:
             nombre = input('Ingresa el nombre del Pokémon: ').strip()
 
             while True:
-                i = int(input('¿Cuántas evoluciones adicionales tendrá el Pokémon? (0 si no tiene): '))
-                if i < 0 or i > 2:
-                    print('Ups. Ese valor no es válido. :p\n')
-                else:
-                    break
+                try:
+                    i = int(input('¿Cuántas evoluciones adicionales tendrá el Pokémon? (0 si no tiene): '))
+                    if i < 0 or i > 2:
+                        print('Ups. Ese valor no es válido. :p\n')
+                    else:
+                        break
+                except ValueError:
+                    print('Introduzca la cantidad como un número entero')
 
             evos = [nombre]
             for n in range(i):
@@ -715,33 +727,45 @@ Tenemos 4 tipos de Pokémon disponibles:
             descripcion = input('Ingresa una breve descripción del Pokémon: ')
 
             while True:
-                ataque = int(input('Ingresa el valor de ataque del Pokémon (1 - 1000): '))
-                if ataque < 1 or ataque > 1000:
-                    print('Ups. Ese valor no está dentro del rango. :p\n')
-                else:
-                    break
+                try:
+                    ataque = int(input('Ingresa el valor de ataque del Pokémon (1 - 1000): '))
+                    if ataque < 1 or ataque > 1000:
+                        print('Ups. Ese valor no está dentro del rango. :p\n')
+                    else:
+                        break
+                except ValueError:
+                    print('Introduzca la cantidad como un número entero')
 
             while True:
-                defensa = int(input('Ingresa el valor de defensa del Pokémon (1 - 1000): '))
-                if defensa < 1 or defensa > 1000:
-                    print('Ups. Ese valor no está dentro del rango. :p\n')
-                else:
-                    break
+                try:
+                    defensa = int(input('Ingresa el valor de defensa del Pokémon (1 - 1000): '))
+                    if defensa < 1 or defensa > 1000:
+                        print('Ups. Ese valor no está dentro del rango. :p\n')
+                    else:
+                        break
+                except ValueError:
+                    print('Introduzca la cantidad como un número entero')
 
             while True:
-                vida = int(input('Ingresa el valor de vida del Pokémon (1 - 1000): '))
-                if vida < 1 or vida > 1000:
-                    print('Ups. Ese valor no está dentro del rango. :p\n')
-                else:
-                    break
+                try:
+                    vida = int(input('Ingresa el valor de vida del Pokémon (1 - 1000): '))
+                    if vida < 1 or vida > 1000:
+                        print('Ups. Ese valor no está dentro del rango. :p\n')
+                    else:
+                        break
+                except ValueError:
+                    print('Introduzca la cantidad como un número entero')
 
 
             while True:
-                daño_especial = int(input('Ingresa el valor del daño especial del Pokémon (1 - 1000): '))
-                if daño_especial < 1 or daño_especial > 1000:
-                    print('Ups. Ese valor no está dentro del rango. :p\n')
-                else:
-                    break
+                try:
+                    daño_especial = int(input('Ingresa el valor del daño especial del Pokémon (1 - 1000): '))
+                    if daño_especial < 1 or daño_especial > 1000:
+                        print('Ups. Ese valor no está dentro del rango. :p\n')
+                    else:
+                        break
+                except ValueError:
+                    print('Introduzca la cantidad como un número entero')
 
             if tipo == 'agua':
                 nuevo_pokemon = Agua(nombre, descripcion, ataque, defensa, vida, daño_especial)
