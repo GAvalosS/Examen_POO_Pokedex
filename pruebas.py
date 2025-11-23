@@ -605,7 +605,7 @@ Tenemos 4 tipos de Pokémon disponibles:
 
         elif opcion == '4':
             fecha = datetime.now().strftime("%d-%m-%Y")
-            hora = datetime.now().strftime("%H-%M")
+            hora = datetime.now().strftime("%H-%M-%S")
             nombrearchivo = f"batalla_{fecha}_{hora}.txt"
             archivo = open(f"{nombrearchivo}", "a")
             os.system('cls')
