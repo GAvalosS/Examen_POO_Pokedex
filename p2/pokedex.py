@@ -151,11 +151,9 @@ class Hierba(Pokemon):
         super().actualizar(boostAtaque + 4, boostDefensa + 6, boostVida + 5)
 
 
-# Listas globales
 PEnemigos = []
 misPokemones = []
 
-# --- plantillas iniciales ---
 PEnemigo = Agua('Squirtle', 'Es una tortuga :D', 50, 130, 180, 120)
 evos = ['Squirtle', 'Wartortle', 'Blastoise']
 PEnemigo.evos = evos
@@ -176,9 +174,7 @@ evos = ['Bulbasaur', 'Ivysaur', 'Venusaur']
 PEnemigo.evos = evos
 PEnemigos.append(PEnemigo)
 
-# ---------------------------
-# Helpers: serializar / deserializar Pokemons
-# ---------------------------
+
 
 def pokemon_to_dict(p):
     return {
@@ -259,7 +255,8 @@ def mostrarMenu():
 
 def buscarPokemon(pokemon, atrapado):
     i = 1
-
+    j = 0
+    repetidos = []
     if pokemon is None:
         PBuscado = input('Ingresa el nombre de tu Pokémon: ')
     else:
@@ -269,11 +266,30 @@ def buscarPokemon(pokemon, atrapado):
         for p in misPokemones:
             if p.nombre.lower() == PBuscado.lower():
                 indice = i - 1
-                return indice
+                repetidos.append(j)
             else:
                 i += 1
-
-        if i > len(misPokemones):
+            j += 1
+        i = 0
+        if len(repetidos) > 1:
+            print('Parece que hay más de un Pokémon con el mismo nombre :O')
+            for p in repetidos:
+                misPokemones[p].detallesPokemon()
+                i += 1
+            while True:
+                try:
+                    op = int(input('Selecciona el que estas buscando\n'))
+                    if op > len(repetidos) or op < 1:
+                        raise ValueError
+                    else:
+                        break
+                except ValueError:
+                    print('Ups, parece que seleccionaste una opción invalida, intente nuevamente con un entero dentro del rango')
+            indice = repetidos[op-1]
+            return indice
+        elif len(repetidos) == 1:
+            return indice
+        else:
             print(f"\n¡Oh no, {nombre_usuario}! Parece que aún no tienes ese Pokémon atrapado. UnU\n"
                   'Vamos por él. :D\n')
             return None
